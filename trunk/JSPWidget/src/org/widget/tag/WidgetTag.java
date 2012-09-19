@@ -12,7 +12,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
 
-public class WidgetTag extends TagSupport {
+final public class WidgetTag extends TagSupport {
 	/**
 	 * ºËÐÄtag
 	 */
