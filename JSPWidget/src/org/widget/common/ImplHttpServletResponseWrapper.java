@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
 /** 重写HttpServletResponseWrapper 更改 include 输出 */
-public class ImplHttpServletResponseWrapper extends HttpServletResponseWrapper {
+final public class ImplHttpServletResponseWrapper extends HttpServletResponseWrapper {
 
 	protected String IMPORT_ILLEGAL_WRITER = " Unexpected internal error during &lt;import&gt: \\Target servlet called getWriter(), then getOutputStream()";
 	/** 'True' if getWriter() was called; false otherwise. */
