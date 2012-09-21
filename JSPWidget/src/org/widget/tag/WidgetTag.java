@@ -108,5 +108,4 @@ final public class WidgetTag extends TagSupport {
 	public void setValue(Object value) {
 		this.value = value;
 	}
-
 }
