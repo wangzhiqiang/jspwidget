@@ -14,20 +14,20 @@ public abstract class Widget {
 	public abstract String run(HttpServletRequest request,
 			HttpServletResponse response);
 	 
-	//跳转的url 返回页面类容
+	//跳转的url 返回页面内容
 	public String forward(String url, HttpServletRequest request,
 			HttpServletResponse response) {
 		RequestDispatcher rd = request.getRequestDispatcher(url);
-		ImportHttpServletResponseWrapper sres = new ImportHttpServletResponseWrapper(
+		ImportHttpServletResponseWrapper ihrw = new ImportHttpServletResponseWrapper(
 				response);
 		try { 
-			rd.include(request, sres);
+			rd.include(request, ihrw);
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return sres.getString();
+		return ihrw.getString();
 	}
 
 }
