@@ -10,21 +10,16 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-/** ÷ÿ–¥HttpServletResponseWrapper ∏¸∏ƒ include  ‰≥ˆ */
-final public class ImplHttpServletResponseWrapper extends HttpServletResponseWrapper {
+final public class ImportHttpServletResponseWrapper extends
+		HttpServletResponseWrapper {
 
-	protected String IMPORT_ILLEGAL_WRITER = " Unexpected internal error during &lt;import&gt: \\Target servlet called getWriter(), then getOutputStream()";
-	/** 'True' if getWriter() was called; false otherwise. */
+	protected String ILLEGAL_WRITER = " ËµÑÊ∫êË¢´Âç†Áî®  ";
 	private boolean isWriterUsed;
-
-	/** 'True if getOutputStream() was called; false otherwise. */
 	private boolean isStreamUsed;
-
 	private StringWriter sw = new StringWriter();
-
 	private ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-	public ImplHttpServletResponseWrapper(HttpServletResponse response) {
+	public ImportHttpServletResponseWrapper(HttpServletResponse response) {
 		super(response);
 	}
 
@@ -35,26 +30,25 @@ final public class ImplHttpServletResponseWrapper extends HttpServletResponseWra
 		}
 	};
 
-	/** Returns a Writer designed to buffer the output. */
 	@Override
 	public PrintWriter getWriter() throws IOException {
 		if (isStreamUsed)
-			throw new IllegalStateException(IMPORT_ILLEGAL_WRITER);
+			throw new IllegalStateException(ILLEGAL_WRITER);
 		isWriterUsed = true;
 		return new PrintWriter(sw);
 	}
 
-	/** Returns a ServletOutputStream designed to buffer the output. */
 	@Override
 	public ServletOutputStream getOutputStream() {
 		if (isWriterUsed)
-			throw new IllegalStateException(IMPORT_ILLEGAL_WRITER);
+			throw new IllegalStateException(ILLEGAL_WRITER);
 		isStreamUsed = true;
 		return sos;
 	}
 
+	// Ëé∑ÂèñresponseÈáåÁöÑËæìÂá∫ÊµÅ
 	public String getString() {
-		
+
 		if (isWriterUsed) {
 			return sw.toString();
 		} else if (isStreamUsed) {
@@ -65,10 +59,9 @@ final public class ImplHttpServletResponseWrapper extends HttpServletResponseWra
 				return bos.toString(character);
 			} catch (UnsupportedEncodingException e) {
 				e.printStackTrace();
-				return "";
 			}
-		} else
-			return "";
+		}  
+		return "";
 	}
 
 }
