@@ -14,58 +14,64 @@ import javax.servlet.jsp.tagext.TagSupport;
 
 final public class WidgetTag extends TagSupport {
 	/**
-	 * ºËĞÄtag
+	 *  
 	 */
 	private static final long serialVersionUID = 3268933179073293342L;
-	// ¶¨Òå½ÓÊÕ²ÎÊı
-	private String name; // ¼ÓÔØÍêÕûClassÃû
-	private String key; // ²ÎÊı
-	private Object value;
+	 
+	private String name;  //package.class 
+	private String key;  
+	private Object value; 
 	private String function = "run"; // default function
 
 	@Override
 	public int doStartTag() throws JspException {
-
+		//è·å–jspè¾“å‡ºå¯¹è±¡
 		JspWriter jspOut = this.pageContext.getOut();
-
+		//è·å–request å’Œresponse
 		HttpServletRequest request = (HttpServletRequest) this.pageContext
 				.getRequest();
 
 		HttpServletResponse response = (HttpServletResponse) this.pageContext
 				.getResponse();
+		//æ¥æ”¶å‚æ•°å†™å…¥response
 		if((key!=null && !key.equals(""))&&(value!=null && !value.equals("")))
 			request.setAttribute(key, value);
 		
 		
 		Class<?> c = null;
 		try {
-			c = Class.forName(name); // ¼ÓÔØclass
+			//åŠ è½½class
+			c = Class.forName(name); 
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
 		Object obj = null;
 		try {
-			obj = c.newInstance(); // µÃµ½ÊµÀı»¯¶ÔÏó
+			//å¾—åˆ°å®ä¾‹åŒ–å¯¹è±¡
+			obj = c.newInstance();  
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		}
-		Method[] methods = c.getDeclaredMethods(); // µÃµ½È«Ìå·½·¨Êı×é
-
+		//è·å–å¯¹è±¡çš„æ‰€æœ‰æ–¹æ³•
+		Method[] methods = c.getDeclaredMethods();  
+		//éå†æ–¹æ³•
 		for (int i = 0; i < methods.length; i++) {
 			@SuppressWarnings("rawtypes")
-			Class[] types = methods[i].getParameterTypes();// »ñÈ¡·½·¨²ÎÊıÀàĞÍ
+			//è·å–æ–¹æ³•å‚æ•°ç±»å‹
+			Class[] types = methods[i].getParameterTypes(); 
 			Object[] values = new Object[types.length];
 			for (int j = 0; j < types.length; j++) {
+			//ä¼ å‚
 				if (HttpServletRequest.class == types[j])
 					values[j] = request;
 				if (HttpServletResponse.class == types[j])
 					values[j] = response;
 			}
+			//æ‰§è¡Œæ–¹æ³•  è¾“å‡ºé¡µé¢code
 			if (methods[i].getName().equals(function)) {
 				try {
-					// Ö´ĞĞ ·½·¨ ·´»ØÒ³ÃæÊä³ö
 					jspOut.write((String) methods[i].invoke(obj, values));
 
 				} catch (IllegalArgumentException e) {
