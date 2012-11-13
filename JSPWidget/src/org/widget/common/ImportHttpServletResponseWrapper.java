@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 final public class ImportHttpServletResponseWrapper extends
 		HttpServletResponseWrapper {
 
-	protected String ILLEGAL_WRITER = " 资源被占用  ";
+	protected String ILLEGAL_WRITER = "sources in used";
 	private boolean isWriterUsed;
 	private boolean isStreamUsed;
 	private StringWriter sw = new StringWriter();
@@ -46,7 +46,7 @@ final public class ImportHttpServletResponseWrapper extends
 		return sos;
 	}
 
-	// 获取response里的输出流
+	// get response outputstream
 	public String getString() {
 
 		if (isWriterUsed) {
