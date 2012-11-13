@@ -1,17 +1,17 @@
 package net.huaixiu.utils;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.math.BigInteger;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import net.huaixiu.bean.ArticleEntity;
 
 public class URLUtils {
 	/**
@@ -25,11 +25,11 @@ public class URLUtils {
 	public static String content(String url, String encode) {
 		String str = null;
 		try {
-			if(!url.equals("")&&url != null)
+			if (!url.equals("") && url != null)
 				url = url.trim();
 			URL u = new URL(url);
 			HttpURLConnection uc = (HttpURLConnection) u.openConnection();
-			uc.setConnectTimeout(1000);
+			uc.setConnectTimeout(3000);
 			InputStreamReader inreader = new InputStreamReader(
 					uc.getInputStream(), encode);
 			BufferedReader breader = new BufferedReader(inreader);
@@ -47,6 +47,21 @@ public class URLUtils {
 			e.printStackTrace();
 		}
 		return str;
+	}
+
+	public static List<ArticleEntity> list(String content) {
+		String regex;
+        List<ArticleEntity> list = new ArrayList<ArticleEntity>();
+        regex = "<tr>(.*?)</tr>";
+        Pattern pa = Pattern.compile(regex ,Pattern.DOTALL);
+        Matcher ma = pa.matcher(content);
+        ArticleEntity article = null;
+        while (ma.find()) {
+        	article = new ArticleEntity();
+        	article.setAll(ma.group());
+            list.add(article);
+        }
+        return list;
 	}
 
 	public static String decodeUnicode(String theString) {
